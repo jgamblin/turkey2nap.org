@@ -41,8 +41,9 @@ precise formatting, all the tropes.
 ## The bit (canonical facts — keep consistent everywhere)
 
 - **Name:** Turkey2Nap · **CVE:** CVE-1621-1126 (obviously fake year)
-- **Class:** Unauthenticated Remote Nap Execution (RNE) via L-Tryptophan
-  deserialization in the Thanksgiving Dinner runtime.
+- **Class:** Unauthenticated Remote Nap Execution (RNE) via a stomach
+  buffer overflow in the Thanksgiving Dinner runtime (CWE-120: Buffer Copy
+  without Checking Size of Plate).
 - **CVSS:** a deliberately disagreeing row — 9.2 (CVSS 4.0, CNA), 10.0 (a researcher's blog), 9.8 (3.1), 11.0 ("Grandma").
   Revised after review: "watchTurkey" and "GPT-5.6" were too close to real names.
 - **Alias:** also tracked as Turkey4Nap (two names, one bug).

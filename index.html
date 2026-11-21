@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Turkey2Nap (CVE-1621-1126)</title>
-<meta name="description" content="Turkey2Nap (CVE-1621-1126): unauthenticated Remote Nap Execution via L-Tryptophan deserialization in the Thanksgiving Dinner runtime. Am I affected?">
+<meta name="description" content="Turkey2Nap (CVE-1621-1126): unauthenticated Remote Nap Execution via a stomach buffer overflow in the Thanksgiving Dinner runtime. Am I affected?">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://turkey2nap.org/">
 <meta property="og:title" content="Turkey2Nap (CVE-1621-1126)">
@@ -162,7 +162,8 @@
   .scanner fieldset { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
   .scanner legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
   .scanner legend .qn { font-family: var(--mono); color: var(--muted); font-weight: 400; margin-right: .4em; }
-  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 6px; }
+  .opts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  @media (max-width: 700px) { .opts { grid-template-columns: repeat(2, 1fr); } }
   .opts label {
     display: flex; gap: 10px; align-items: flex-start;
     border: 1px solid var(--line);
@@ -289,14 +290,14 @@
   <div>
     <p class="kicker">CVE-1621-1126 · ALSO TRACKED AS TURKEY4NAP · PUBLISHED 2026-11-21 · STATUS: DISPUTED BY VENDOR</p>
     <h1>Turkey2Nap</h1>
-    <p class="subtitle">Unauthenticated Remote Nap Execution (RNE) via L-Tryptophan deserialization in the Thanksgiving Dinner runtime.</p>
+    <p class="subtitle">Unauthenticated Remote Nap Execution (RNE) via a stomach buffer overflow in the Thanksgiving Dinner runtime.</p>
   </div>
 </header>
 
 <ul class="badges" aria-label="Classification">
   <li class="badge sev">CRITICAL</li>
   <li class="badge kev">✔ Known Exploited Vittles · due before dessert</li>
-  <li class="badge">CWE-502: Deserialization of Untrusted Gravy</li>
+  <li class="badge">CWE-120: Buffer Copy without Checking Size of Plate</li>
   <li class="badge">Attack vector: /couch</li>
 </ul>
 
@@ -336,7 +337,7 @@
 
 <section aria-labelledby="details-h">
   <h2 id="details-h"><span class="num">02</span>Technical details</h2>
-  <p>The Thanksgiving Dinner runtime deserializes incoming food without validating the <code>Serving-Size</code> header. When the digestion handler processes a second helping, L-Tryptophan objects are reconstructed directly into the host's serotonin buffer. Because the buffer was sized in 1621 and has never been reviewed, it overflows, and control passes to the <code>Recliner</code> subsystem.</p>
+  <p>The Thanksgiving Dinner runtime copies incoming food into a fixed-size stomach buffer without checking the <code>Serving-Size</code> header. The buffer holds one plate. It was sized in 1621 and has never been reviewed. A second helping overflows it, overwrites the return address for "go help with the dishes," and control passes to the <code>Recliner</code> subsystem.</p>
   <p>The vulnerable code path is reachable before the host's own application logic ("I should help with the dishes") gets a chance to run.</p>
   <p>An SBOM was requested. The vendor provided Grandma's recipe card, last updated 1974. It lists "butter (some)."</p>
   <p>Example exploit request:</p>
@@ -349,8 +350,8 @@ Transfer-Encoding: stuffed
 
 {"helping": 2, "gravy": "yes", "rolls": 4, "pie": ["pumpkin", "pecan", "apple"]}</code></pre>
   <p>Resulting crash, captured from a host in the wild:</p>
-<pre><code>Exception in thread "afternoon" dinner.runtime.TryptophanOverflowError: serotonin buffer exhausted (size=1, requested=2)
-    at dinner.runtime.Digestion.deserialize(Digestion.java:1621)
+<pre><code>Exception in thread "afternoon" dinner.runtime.StomachBufferOverflowError: buffer full (capacity=1 plate, requested=2)
+    at dinner.runtime.Digestion.copyToStomach(Digestion.java:1621)
     at dinner.runtime.Plate.secondHelping(Plate.java:2)
     at dinner.ui.Recliner.recline(Recliner.java:180)
     at football.Broadcast.thirdQuarter(Broadcast.java:3)
