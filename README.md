@@ -9,7 +9,7 @@ Thanksgiving.
 Turkey2Nap is an unauthenticated Remote Nap Execution flaw: a stomach buffer
 overflow in the Thanksgiving Dinner runtime, triggered by a second helping sent to
 `/couch`. It has a logo, four CVSS scores that disagree, an EPSS score that climbs
-to 0.99997 on Thanksgiving Day, a Known Exploited Vittles listing, and an
+to 0.99997 on Thanksgiving Day, a Known Exploited Vegetation listing, and an
 "Am I Affected?" scanner that gives you a result to share.
 
 This has been a tough month for people in vulnerability management. I hope this

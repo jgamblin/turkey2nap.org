@@ -69,7 +69,7 @@ precise formatting, all the tropes.
 
 1. Header: logo (sleeping turkey + shell prompt), name, CVE, CVSS row, EPSS,
    severity badge, and a "CISA KEV"-style badge from a fictional catalog
-   ("Known Exploited Vittles").
+   ("Known Exploited Vegetation").
 2. TL;DR box.
 3. **Am I Affected?** scanner (see below).
 4. Technical details (deadpan pseudo-writeup with a fake stack trace / payload).
