@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404: Plate not found · Turkey2Nap</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #faf7f2; --fg: #1f1b16; --muted: #6b6258; --code-bg: #f3ede4; --line: #e6ded3; --accent: #b3261e; --on-accent: #fff; color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #13110f; --fg: #f1ebe3; --muted: #a59b8f; --code-bg: #0d0c0a; --line: #322c26; --accent: #ff6b5b; --on-accent: #13110f; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 "IBM Plex Sans", system-ui, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 72px 16px; }
+  img { width: 96px; height: 96px; display: block; }
+  .k { font: 600 .8rem "IBM Plex Mono", monospace; color: var(--muted); letter-spacing: .04em; margin: 24px 0 4px; }
+  h1 { font-size: clamp(2rem, 7vw, 2.8rem); margin: 0 0 12px; letter-spacing: -.02em; line-height: 1.1; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; overflow-x: auto; font: .82rem/1.55 "IBM Plex Mono", monospace; }
+  a.btn { display: inline-block; margin-top: 8px; font: 600 .95rem "IBM Plex Mono", monospace; background: var(--accent); color: var(--on-accent); text-decoration: none; border-radius: 8px; padding: 12px 18px; }
+</style>
+</head>
+<body>
+<main>
+  <img src="/favicon.svg" alt="">
+  <p class="k">HTTP 404 · CVE-1621-1126</p>
+  <h1>404: Plate not found</h1>
+  <p>The page you requested has already been eaten. Someone went back for seconds before you got here.</p>
+<pre><code>GET /your-plate HTTP/1.1
+Host: turkey2nap.org
+
+HTTP/1.1 404 Not Found
+X-Served-By: grandma
+X-Reason: there's more in the kitchen</code></pre>
+  <p><a class="btn" href="/">Back to the advisory</a></p>
+</main>
+</body>
+</html>

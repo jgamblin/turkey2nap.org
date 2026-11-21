@@ -232,6 +232,10 @@
     background: var(--bg); border: 2px solid var(--accent);
   }
   ol.timeline li.future::before { border-style: dashed; border-color: var(--muted); }
+  .rev-h { font: 600 .8rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 28px 0 6px; }
+  table.revs td { padding: 6px 12px 6px 0; font-size: .88rem; }
+  table.revs td.mono { color: var(--muted); white-space: nowrap; width: 1%; }
+  .tlp-tag { font: 600 .78rem var(--mono); color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 1px 6px; margin-right: 6px; }
   ol.timeline time { display: block; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
 
   ul.clean { padding-left: 1.2em; }
@@ -391,6 +395,15 @@ Caused by: gravy.BoatException: boat empty
     <li><time>2026-11-21</time>Advisory published early. turkey2nap.org registered. The logo is finished before any patch exists. Added to the Known Exploited Vegetation catalog, remediation due before dessert.</li>
     <li class="future"><time>2026-11-26 15:00 local (expected)</time>Mass exploitation expected within 15 minutes of kickoff.</li>
   </ol>
+  <h3 class="rev-h">Revision history</h3>
+  <table class="revs">
+    <tbody>
+      <tr><td class="mono">Rev 1</td><td>Initial advisory.</td></tr>
+      <tr><td class="mono">Rev 2</td><td>EPSS updated. It will be updated again on Thursday.</td></tr>
+      <tr><td class="mono">Rev 3</td><td>Vendor dispute noted. Severity unchanged.</td></tr>
+      <tr><td class="mono">Rev 4</td><td>Renamed from Turkey4Nap because the other team's name was worse.</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <section aria-labelledby="mitigations-h">
@@ -468,6 +481,7 @@ Caused by: gravy.BoatException: boat empty
 
 </main>
 <footer>
+  <p class="tlp"><span class="tlp-tag">TLP:CRANBERRY</span> Share with your whole family.</p>
   <p>This is a parody. No turkeys were harmed. Not affiliated with anyone.</p>
   <p>CVE-1621-1126 is not a real CVE. Please do not file it. Please do take a walk.</p>
 </footer>

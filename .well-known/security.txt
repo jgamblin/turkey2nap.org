@@ -1,0 +1,14 @@
+# Turkey2Nap (CVE-1621-1126) vulnerability disclosure policy
+# This is a parody. Please do take a walk.
+
+Contact: tel:+1-555-0126
+Expires: 2026-11-30T23:59:59Z
+Preferred-Languages: en, gravy
+Canonical: https://turkey2nap.org/.well-known/security.txt
+Policy: https://turkey2nap.org/#mitigations-h
+Acknowledgments: https://turkey2nap.org/#credits-h
+
+# Ask for Grandma.
+# Policy summary: no seconds until everyone has had firsts.
+# Safe harbor applies to anyone who volunteers for dish duty.
+# This file expires when the leftovers do.
