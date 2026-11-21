@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turkey2Nap (CVE-1621-1126)</title>
+<meta name="description" content="Turkey2Nap (CVE-1621-1126): unauthenticated Remote Nap Execution via L-Tryptophan deserialization in the Thanksgiving Dinner runtime. Am I affected?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://turkey2nap.org/">
+<meta property="og:title" content="Turkey2Nap (CVE-1621-1126)">
+<meta property="og:description" content="Unauthenticated Remote Nap Execution in the Thanksgiving Dinner runtime. CVSS 11.0 (Grandma). EPSS 0.99997 on Thursday.">
+<meta property="og:image" content="https://turkey2nap.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Turkey2Nap (CVE-1621-1126)">
+<meta name="twitter:description" content="Unauthenticated Remote Nap Execution in the Thanksgiving Dinner runtime. Am I affected?">
+<meta name="twitter:image" content="https://turkey2nap.org/og.png">
+<meta name="theme-color" content="#b3261e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --fg: #1f1b16;
+    --muted: #6b6258;
+    --card: #ffffff;
+    --line: #e6ded3;
+    --code-bg: #f3ede4;
+    --accent: #b3261e;
+    --accent-2: #c77812;
+    --ok: #2e7d4f;
+    --low: #7a8a1a;
+    --high: #c77812;
+    --crit: #b3261e;
+    --pwned: #6d1a8a;
+    --note-bg: #fff4e0;
+    --note-line: #f0c98a;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #13110f;
+      --fg: #f1ebe3;
+      --muted: #a59b8f;
+      --card: #1c1916;
+      --line: #322c26;
+      --code-bg: #0d0c0a;
+      --accent: #ff6b5b;
+      --accent-2: #f2a43a;
+      --ok: #5fcf8e;
+      --low: #c3d44a;
+      --high: #f2a43a;
+      --crit: #ff6b5b;
+      --pwned: #d38cff;
+      --note-bg: #2a2115;
+      --note-line: #6b5228;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #13110f; --fg: #f1ebe3; --muted: #a59b8f; --card: #1c1916; --line: #322c26;
+    --code-bg: #0d0c0a; --accent: #ff6b5b; --accent-2: #f2a43a; --ok: #5fcf8e; --low: #c3d44a;
+    --high: #f2a43a; --crit: #ff6b5b; --pwned: #d38cff; --note-bg: #2a2115; --note-line: #6b5228;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.6 var(--sans);
+  }
+  main { max-width: 780px; margin: 0 auto; padding: 48px 16px 32px; }
+  a { color: var(--accent); }
+  h1, h2, h3 { line-height: 1.2; }
+  h2 {
+    font-size: 1.05rem;
+    font-family: var(--mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin: 56px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--muted); font-weight: 400; margin-right: .5em; }
+  code, pre, .mono { font-family: var(--mono); }
+  code { background: var(--code-bg); padding: .1em .35em; border-radius: 4px; font-size: .9em; }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: .82rem;
+    line-height: 1.55;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  .muted { color: var(--muted); }
+  small, .small { font-size: .85rem; }
+
+  /* Header */
+  header.hero { display: grid; grid-template-columns: 132px 1fr; gap: 24px; align-items: center; }
+  header.hero svg { width: 132px; height: 132px; display: block; }
+  .kicker { font-family: var(--mono); font-size: .8rem; color: var(--muted); letter-spacing: .04em; margin: 0 0 6px; }
+  h1 { font-size: clamp(2.3rem, 7vw, 3.4rem); margin: 0; letter-spacing: -.02em; }
+  .subtitle { margin: 8px 0 0; font-size: 1.05rem; color: var(--muted); }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; list-style: none; }
+  .badge {
+    font-family: var(--mono);
+    font-size: .78rem;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 4px 12px;
+    max-width: 100%;
+  }
+  .badge.sev { background: var(--crit); border-color: var(--crit); color: #fff; font-weight: 600; }
+  .badge.kev { border-color: var(--accent-2); color: var(--accent-2); font-weight: 600; }
+
+  .scores { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0 0; }
+  @media (max-width: 700px) { .scores { grid-template-columns: repeat(2, 1fr); } .scores .epss { grid-column: 1 / -1; } }
+  .score {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .score .v { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; line-height: 1.1; }
+  .score .l { font-size: .78rem; color: var(--muted); margin-top: 4px; }
+  .score.epss { border-color: var(--accent); }
+  .score.epss .v { color: var(--accent); }
+  .footnote { font-size: .8rem; color: var(--muted); margin: 8px 0 0; }
+
+  /* TL;DR */
+  .tldr {
+    margin-top: 40px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .tldr p { margin: .4em 0; }
+  .tldr strong { font-family: var(--mono); font-size: .8rem; letter-spacing: .08em; }
+
+  /* Scanner */
+  .scanner { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .scanner fieldset { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
+  .scanner legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
+  .scanner legend .qn { font-family: var(--mono); color: var(--muted); font-weight: 400; margin-right: .4em; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 6px; }
+  .opts label {
+    display: flex; gap: 10px; align-items: flex-start;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: .92rem;
+    line-height: 1.35;
+  }
+  .opts input { margin-top: 3px; accent-color: var(--accent); }
+  .opts label:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+  .opts label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn {
+    font: 600 .95rem var(--mono);
+    background: var(--accent);
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    padding: 12px 18px;
+    cursor: pointer;
+  }
+  .btn.secondary { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+  .btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .terminal {
+    background: #0d0c0a;
+    color: #d8f5d0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font: .82rem/1.6 var(--mono);
+    margin-top: 16px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    min-height: 3em;
+  }
+  .terminal[hidden], .report[hidden] { display: none; }
+  .report { margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+  .report .tier { font: 700 1.6rem/1.2 var(--mono); margin: 4px 0 6px; }
+  .report .tier.t-na { color: var(--ok); }
+  .report .tier.t-low { color: var(--low); }
+  .report .tier.t-high { color: var(--high); }
+  .report .tier.t-crit { color: var(--crit); }
+  .report .tier.t-pwned { color: var(--pwned); }
+  .report dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 12px 0 16px; font-size: .9rem; }
+  .report dt { color: var(--muted); font-family: var(--mono); font-size: .8rem; padding-top: 2px; }
+  .report dd { margin: 0; }
+  .share-text { font: .85rem/1.5 var(--mono); background: var(--code-bg); border-radius: 6px; padding: 10px 12px; margin: 0 0 12px; overflow-wrap: anywhere; }
+  .copy-status { font-size: .85rem; color: var(--muted); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  td.mono { white-space: nowrap; }
+
+  /* Timeline */
+  ol.timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+  ol.timeline li { position: relative; padding: 0 0 18px 20px; }
+  ol.timeline li::before {
+    content: ""; position: absolute; left: -7px; top: 7px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--accent);
+  }
+  ol.timeline li.future::before { border-style: dashed; border-color: var(--muted); }
+  ol.timeline time { display: block; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+
+  ul.clean { padding-left: 1.2em; }
+  ul.clean li { margin: .35em 0; }
+
+  dl.faq dt { font-weight: 600; margin-top: 18px; }
+  dl.faq dd { margin: 4px 0 0; color: var(--fg); }
+
+  /* Author note: the one sincere part of the page */
+  .note {
+    margin-top: 64px;
+    background: var(--note-bg);
+    border: 1px solid var(--note-line);
+    border-radius: 14px;
+    padding: 24px 26px;
+    font-family: var(--sans);
+  }
+  .note h2 { border: 0; margin: 0 0 10px; padding: 0; text-transform: none; letter-spacing: 0; font-family: var(--sans); font-size: 1.15rem; font-weight: 700; }
+  .note p { margin: 0 0 10px; font-size: 1.05rem; }
+  .note .sig { font-style: italic; margin: 0; }
+
+  footer { max-width: 780px; margin: 0 auto; padding: 24px 16px 48px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+  footer p { margin: .3em 0; }
+
+  @media (max-width: 560px) {
+    main { padding-top: 28px; }
+    header.hero { grid-template-columns: 1fr; gap: 12px; }
+    header.hero svg { width: 96px; height: 96px; }
+    .report dl { grid-template-columns: 1fr; gap: 0; }
+    .report dd { margin-bottom: 8px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <svg viewBox="0 0 120 120" role="img" aria-labelledby="logo-title">
+    <title id="logo-title">Turkey2Nap logo: a sleeping turkey with a shell prompt</title>
+    <g transform="translate(60 74)">
+      <ellipse rx="9" ry="38" fill="#c77812" transform="rotate(-64) translate(0 -16)"/>
+      <ellipse rx="9" ry="38" fill="#b3261e" transform="rotate(-32) translate(0 -16)"/>
+      <ellipse rx="9" ry="40" fill="#e0a43a" transform="rotate(0) translate(0 -16)"/>
+      <ellipse rx="9" ry="38" fill="#b3261e" transform="rotate(32) translate(0 -16)"/>
+      <ellipse rx="9" ry="38" fill="#c77812" transform="rotate(64) translate(0 -16)"/>
+    </g>
+    <ellipse cx="60" cy="82" rx="30" ry="25" fill="#6b3f22"/>
+    <circle cx="60" cy="52" r="13" fill="#8a5530"/>
+    <path d="M53 50 q3 3 6 0" stroke="#f6efe4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M61 50 q3 3 6 0" stroke="#f6efe4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M57 55 l3 5 l3 -5 z" fill="#f2a43a"/>
+    <path d="M62 58 q4 6 0 11 q-3 -5 0 -11 z" fill="#d6332a"/>
+    <text x="60" y="91" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="600" fill="#f6efe4">&gt;_</text>
+    <text x="84" y="34" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#8a7f72">z</text>
+    <text x="93" y="24" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="600" fill="#8a7f72">Z</text>
+  </svg>
+  <div>
+    <p class="kicker">CVE-1621-1126 · PUBLISHED 2026-11-21 · STATUS: DISPUTED BY VENDOR</p>
+    <h1>Turkey2Nap</h1>
+    <p class="subtitle">Unauthenticated Remote Nap Execution (RNE) via L-Tryptophan deserialization in the Thanksgiving Dinner runtime.</p>
+  </div>
+</header>
+
+<ul class="badges" aria-label="Classification">
+  <li class="badge sev">CRITICAL</li>
+  <li class="badge kev">✔ Known Exploited Vittles · due before dessert</li>
+  <li class="badge">CWE-502: Deserialization of Untrusted Gravy</li>
+  <li class="badge">Attack vector: /couch</li>
+</ul>
+
+<div class="scores" aria-label="Scores">
+  <div class="score"><div class="v">9.2</div><div class="l">CVSS 4.0 · Thanksgiving Dinner maintainers</div></div>
+  <div class="score"><div class="v">10.0</div><div class="l">watchTurkey</div></div>
+  <div class="score"><div class="v">9.8</div><div class="l">CVSS 3.1</div></div>
+  <div class="score"><div class="v">11.0</div><div class="l">Grandma</div></div>
+  <div class="score epss">
+    <div class="v" id="epss-score">0.00042</div>
+    <div class="l">EPSS · <span id="epss-pct">4th</span> percentile</div>
+  </div>
+</div>
+<p class="footnote">EPSS is recalculated daily. Thursday is not a normal day.</p>
+
+<section class="tldr" aria-label="TL;DR">
+  <p><strong>TL;DR</strong></p>
+  <p>Every version of Thanksgiving Dinner since 1621 lets an unauthenticated attacker (a relative) send a crafted payload (a second helping) to <code>/couch</code> and achieve Remote Nap Execution. No user interaction is required. The user will, in fact, stop interacting.</p>
+  <p>There is no patch. Mitigations exist. Exploitation in the wild is expected Thursday, starting around kickoff.</p>
+</section>
+
+<section id="scanner" aria-labelledby="scanner-h">
+  <h2 id="scanner-h"><span class="num">01</span>Am I affected?</h2>
+  <p class="muted">Answer six questions. Our scanner runs entirely in your browser. No data leaves the table.</p>
+  <div class="scanner">
+    <form id="scanner-form" novalidate>
+      <noscript><p>The scanner needs JavaScript. Assume you are affected.</p></noscript>
+    </form>
+    <div class="actions">
+      <button type="button" class="btn" id="scan-btn">Run scan</button>
+      <button type="button" class="btn secondary" id="reset-btn" hidden>Rescan</button>
+    </div>
+    <div class="terminal" id="scan-terminal" aria-live="polite" hidden></div>
+    <div class="report" id="scan-report" aria-live="polite" hidden></div>
+  </div>
+</section>
+
+<section aria-labelledby="details-h">
+  <h2 id="details-h"><span class="num">02</span>Technical details</h2>
+  <p>The Thanksgiving Dinner runtime deserializes incoming food without validating the <code>Serving-Size</code> header. When the digestion handler processes a second helping, L-Tryptophan objects are reconstructed directly into the host's serotonin buffer. Because the buffer was sized in 1621 and has never been reviewed, it overflows, and control passes to the <code>Recliner</code> subsystem.</p>
+  <p>The vulnerable code path is reachable before the host's own application logic ("I should help with the dishes") gets a chance to run.</p>
+  <p>Example exploit request:</p>
+<pre><code>POST /couch HTTP/1.1
+Host: living-room.local
+Content-Type: application/x-gravy
+Serving-Size: 2
+X-Forwarded-For: grandma
+Transfer-Encoding: stuffed
+
+{"helping": 2, "gravy": "yes", "rolls": 4, "pie": ["pumpkin", "pecan", "apple"]}</code></pre>
+  <p>Resulting crash, captured from a host in the wild:</p>
+<pre><code>Exception in thread "afternoon" dinner.runtime.TryptophanOverflowError: serotonin buffer exhausted (size=1, requested=2)
+    at dinner.runtime.Digestion.deserialize(Digestion.java:1621)
+    at dinner.runtime.Plate.secondHelping(Plate.java:2)
+    at dinner.ui.Recliner.recline(Recliner.java:180)
+    at football.Broadcast.thirdQuarter(Broadcast.java:3)
+    at human.Consciousness.restingMyEyes(Consciousness.java:Zzz)
+Caused by: gravy.BoatException: boat empty
+    ... 4 more</code></pre>
+  <p class="small muted">Vendor statement: the Thanksgiving Dinner maintainers dispute this CVE, saying turkey has about as much tryptophan as chicken and the root cause is "carbohydrate load and the third quarter." We have rated the vendor's statement CVSS 0.0.</p>
+</section>
+
+<section aria-labelledby="affected-h">
+  <h2 id="affected-h"><span class="num">03</span>Affected versions</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>Affected</th><th>Fixed in</th></tr></thead>
+      <tbody>
+        <tr><td>Thanksgiving Dinner</td><td class="mono">1621 – 2026</td><td>No fix available. See mitigations.</td></tr>
+        <tr><td>Stuffing</td><td class="mono">≤ 2.x</td><td>End of life. No patch planned.</td></tr>
+        <tr><td>Gravy</td><td class="mono">all</td><td>Won't fix (working as intended)</td></tr>
+        <tr><td>Leftovers</td><td class="mono">2026.11.27</td><td>Inherits the vulnerability</td></tr>
+        <tr><td>Friendsgiving</td><td class="mono">all forks</td><td>Downstream. Check with your friends.</td></tr>
+        <tr><td>Tofurky</td><td class="mono">—</td><td>Not affected*</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">* Different exploit chain, same nap.</p>
+</section>
+
+<section aria-labelledby="timeline-h">
+  <h2 id="timeline-h"><span class="num">04</span>Timeline</h2>
+  <ol class="timeline">
+    <li><time>1621</time>Vulnerable code introduced in the initial commit (Plymouth).</li>
+    <li><time>2024-11-28</time>A core maintainer (Grandma) finds the issue during an internal audit. The ticket is closed as WONTFIX: "it's tradition."</li>
+    <li><time>2026-08-01</time>GPT-5.6 Drumstick rediscovers the flaw as part of the <em>Patch the Plate</em> initiative.</li>
+    <li><time>2026-11-19</time>Vendor notified. Coordinated disclosure scheduled for Thursday at noon.</li>
+    <li><time>2026-11-21</time>turkey2nap.org registered. The logo is finished before any patch exists.</li>
+    <li class="future"><time>2026-11-22 (expected)</time>Aunt Linda posts the proof-of-concept video to the family group chat, followed by "is this the right chat?" Embargo broken.</li>
+    <li class="future"><time>2026-11-22 (expected)</time>Exploitation in the wild observed at an early Friendsgiving.</li>
+    <li class="future"><time>2026-11-24 (expected)</time>Added to the Known Exploited Vittles catalog. Remediation due date: before dessert.</li>
+    <li class="future"><time>2026-11-26 15:00 local (expected)</time>Mass exploitation expected within 15 minutes of kickoff.</li>
+  </ol>
+</section>
+
+<section aria-labelledby="mitigations-h">
+  <h2 id="mitigations-h"><span class="num">05</span>Mitigations &amp; patches</h2>
+  <ul class="clean">
+    <li><strong>Stretchy Pants 8.5.12.</strong> Increases buffer size. Does not fix the root cause, and may encourage a third helping.</li>
+    <li><strong>A 10-minute walk.</strong> Rate-limits incoming payloads. Highly effective. Nobody does it.</li>
+    <li><strong>Volunteer for dish duty.</strong> Attack surface reduction. It is very hard to nap at the sink.</li>
+    <li><strong>Coffee.</strong> Temporary workaround. Known to introduce a new issue, Pie2Shell.</li>
+    <li><strong>WAF rule:</strong> <code>deny if plate.count &gt; 1 &amp;&amp; pie.count &gt; 0</code>. Not recommended. Grandma will notice.</li>
+  </ul>
+  <p><strong>If you cannot patch,</strong> follow the guidance from the National Nap Security Centre: <em>take yourself offline</em>. Lie down. Close the blinds. Put your phone face down.</p>
+</section>
+
+<section aria-labelledby="ioc-h">
+  <h2 id="ioc-h"><span class="num">06</span>Indicators of compromise</h2>
+  <ul class="clean">
+    <li>Top button of the waistband undone</li>
+    <li>TV remote found on the carpet, still pointed at the TV</li>
+    <li>Snoring around 70 dB, starting near halftime</li>
+    <li>Slow-blink beaconing about every 30 seconds</li>
+    <li>Lateral movement toward the couch</li>
+    <li>The phrase "I'm just resting my eyes"</li>
+  </ul>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>SHA-256 ("I'm just resting my eyes")</td><td><code>5fd45b00f48461ec5fe1dd8454990d06f2512dc1251aa5421d5ac8cf0f580a1b</code></td></tr>
+        <tr><td>SHA-256 ("a second helping")</td><td><code>578c0c939017891df5c6ebe415a64d29cfe7a416944e6690ffe4ebf447be08f6</code></td></tr>
+        <tr><td>Endpoint</td><td><code>/couch</code>, <code>/recliner</code>, <code>/floor-in-front-of-the-fireplace</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="faq-h">
+  <h2 id="faq-h"><span class="num">07</span>FAQ</h2>
+  <dl class="faq">
+    <dt>Why is it called Turkey2Nap?</dt>
+    <dd>It takes you from turkey to nap. Also, every vulnerability needs a name now.</dd>
+    <dt>Is there a logo?</dt>
+    <dd>Yes. We had the logo before we had a patch.</dd>
+    <dt>Is there a proof of concept?</dt>
+    <dd>Yes. It's called Thursday.</dd>
+    <dt>Is my uncle vulnerable?</dt>
+    <dd>Your uncle is the proof of concept.</dd>
+    <dt>What's the real CVSS score?</dt>
+    <dd>Yes.</dd>
+    <dt>Why is the EPSS score so high on Thursday?</dt>
+    <dd>EPSS estimates the chance of exploitation in the next 30 days. This one needs about four hours.</dd>
+    <dt>Isn't the tryptophan thing a myth?</dt>
+    <dd>Yes. Turkey has about as much tryptophan as chicken. The real root cause is the size of the meal, the carbs, and the third quarter. Like a lot of advisories, ours names the wrong root cause, the vendor has disputed it, and the exploit still works.</dd>
+    <dt>Was this found by AI?</dt>
+    <dd>It was found by GPT-5.6 Drumstick. It has also been independently rediscovered every year by roughly 280 million people.</dd>
+    <dt>Is this related to PHP2Shell, Java2Shell or React2Shell?</dt>
+    <dd>Only spiritually.</dd>
+    <dt>Should I take my systems offline?</dt>
+    <dd>Take <em>yourself</em> offline. Your systems will be fine until Monday.</dd>
+  </dl>
+</section>
+
+<section aria-labelledby="credits-h">
+  <h2 id="credits-h"><span class="num">08</span>Credits</h2>
+  <ul class="clean">
+    <li>Discovered by GPT-5.6 Drumstick, part of the <em>Patch the Plate</em> initiative.</li>
+    <li>Independently rediscovered every November since 1621.</li>
+    <li>Coordinated disclosure by nobody. Aunt Linda posted it.</li>
+    <li>Logo by a cousin with a design app and strong opinions.</li>
+  </ul>
+</section>
+
+<section class="note" aria-labelledby="note-h">
+  <h2 id="note-h">A note from the author</h2>
+  <p>This has been a tough month for people in vulnerability management. I hope this makes you smile a little, as much as it made me smile when it came up in a meeting.</p>
+  <p class="sig">— Jerry</p>
+</section>
+
+</main>
+<footer>
+  <p>This is a parody. No turkeys were harmed. Not affiliated with anyone.</p>
+  <p>CVE-1621-1126 is not a real CVE. Please do not file it. Please do take a walk.</p>
+</footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
