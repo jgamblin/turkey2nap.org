@@ -50,8 +50,8 @@ precise formatting, all the tropes.
 - **EPSS:** shown next to CVSS, and it depends on the day. Low on any normal
   day (e.g. 0.00042, 4th percentile). On Thanksgiving Day it climbs to 0.99997
   (100th percentile) by kickoff. The page computes the value from the visitor's
-  date and time, so it really does jump on Thursday. Footnote: "EPSS is
-  recalculated daily. Thursday is not a normal day."
+  date and time, so it really does jump on Thursday. (The footnote was
+  removed after launch; it broke the flow.)
 - **Affected:** Thanksgiving Dinner 1621–2026. Stuffing ≤ 2.x is EOL, no patch.
 - **Endpoint / trigger:** `/couch`; payload is "a second helping".
 - **Mitigations:** Stretchy Pants 8.5.12; 10-minute walk; "take yourself offline"
