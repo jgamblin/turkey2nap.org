@@ -132,7 +132,7 @@
   .badge.sev { background: var(--crit); border-color: var(--crit); color: var(--on-accent); font-weight: 600; }
   .badge.kev { border-color: var(--kev); color: var(--kev); font-weight: 600; }
 
-  .scores { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0 0; }
+  .scores { display: grid; grid-template-columns: repeat(4, 1fr) 1.35fr; gap: 10px; margin: 20px 0 0; }
   @media (max-width: 700px) { .scores { grid-template-columns: repeat(2, 1fr); } .scores .epss { grid-column: 1 / -1; } }
   .score {
     background: var(--card);
@@ -144,6 +144,7 @@
   .score .l { font-size: .78rem; color: var(--muted); margin-top: 4px; }
   .score.epss { border-color: var(--accent); }
   .score.epss .v { color: var(--accent); }
+  .score.epss .l { white-space: nowrap; }
 
   /* TL;DR */
   .tldr {
@@ -303,7 +304,7 @@
 
 <div class="scores" aria-label="Scores">
   <div class="score"><div class="v">9.2</div><div class="l">CVSS 4.0 · CNA</div></div>
-  <div class="score"><div class="v">10.0</div><div class="l">A researcher's blog</div></div>
+  <div class="score"><div class="v">10.0</div><div class="l">Researcher's blog</div></div>
   <div class="score"><div class="v">9.8</div><div class="l">CVSS 3.1</div></div>
   <div class="score"><div class="v">11.0</div><div class="l">Grandma</div></div>
   <div class="score epss">
