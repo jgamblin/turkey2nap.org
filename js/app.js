@@ -89,6 +89,7 @@ function showReport(answers) {
       <dt>Est. time to nap</dt><dd>${eta}</dd>
       <dt>EPSS (today)</dt><dd>${epss.score.toFixed(5)} (${ordinal(epss.percentile)} percentile)</dd>
       <dt>Recommended fix</dt><dd>${v.tier === 'NOT AFFECTED' ? 'None. Enjoy your walk.' : 'No fix available. See mitigations.'}</dd>
+      ${v.tier === 'NOT AFFECTED' ? '<dt>VEX status</dt><dd>not_affected (justification: vulnerable_code_not_in_execute_path)</dd>' : ''}
     </dl>
     <p class="share-text" id="share-text"></p>
     <div class="actions">
@@ -113,7 +114,9 @@ async function copy(text) {
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
-    status.textContent = 'Selected. Press Ctrl+C or ⌘C to copy.';
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch { /* ignore */ }
+    status.textContent = copied ? 'Copied.' : 'Text selected. Copy it to share.';
   }
 }
 
@@ -124,15 +127,21 @@ const SCAN_LINES = [
   '[*] Probing Serving-Size header handling ...',
   '[*] Measuring serotonin buffer ...',
   '[*] Checking waistband posture ...',
+  '[!] Version detected via banner grab only. Confidence: vibes.',
   '[+] Scan complete.',
 ];
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+let scanRun = 0;
+
 async function runScan() {
+  if (scanBtn.getAttribute('aria-disabled') === 'true') return;
+  const run = ++scanRun;
   const answers = readAnswers();
-  scanBtn.disabled = true;
+  scanBtn.setAttribute('aria-disabled', 'true');
+  resetBtn.hidden = true;
   report.hidden = true;
   term.hidden = false;
   term.textContent = '';
@@ -140,14 +149,18 @@ async function runScan() {
   for (const line of SCAN_LINES) {
     term.textContent += (term.textContent ? '\n' : '') + line;
     if (delay) await sleep(delay);
+    if (run !== scanRun) return;
   }
   history.replaceState(null, '', `#${encodeResult(answers)}`);
   showReport(answers);
-  scanBtn.disabled = false;
+  scanBtn.removeAttribute('aria-disabled');
+  report.focus({ preventScroll: true });
   report.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
 }
 
 function reset() {
+  scanRun++;
+  scanBtn.removeAttribute('aria-disabled');
   form.reset();
   term.hidden = true;
   report.hidden = true;
@@ -157,6 +170,8 @@ function reset() {
 }
 
 renderEpss();
+setInterval(renderEpss, 60_000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) renderEpss(); });
 renderForm();
 scanBtn.addEventListener('click', runScan);
 resetBtn.addEventListener('click', reset);

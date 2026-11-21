@@ -27,9 +27,10 @@ export function epssFor(now) {
   const hours = now.getHours() + now.getMinutes() / 60;
   if (hours >= KICKOFF_HOUR) return { ...EPSS_PEAK };
   const t = hours / KICKOFF_HOUR;
+  // Climb from the Eve value so the score never dips at midnight.
   return {
-    score: Math.round((EPSS_BASE.score + t * (EPSS_PEAK.score - EPSS_BASE.score)) * 1e5) / 1e5,
-    percentile: Math.round(EPSS_BASE.percentile + t * (EPSS_PEAK.percentile - EPSS_BASE.percentile)),
+    score: Math.round((EPSS_EVE.score + t * (EPSS_PEAK.score - EPSS_EVE.score)) * 1e5) / 1e5,
+    percentile: Math.min(99, Math.floor(EPSS_EVE.percentile + t * (EPSS_PEAK.percentile - EPSS_EVE.percentile))),
   };
 }
 

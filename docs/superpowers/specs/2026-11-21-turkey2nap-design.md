@@ -43,8 +43,9 @@ precise formatting, all the tropes.
 - **Name:** Turkey2Nap · **CVE:** CVE-1621-1126 (obviously fake year)
 - **Class:** Unauthenticated Remote Nap Execution (RNE) via L-Tryptophan
   deserialization in the Thanksgiving Dinner runtime.
-- **CVSS:** a deliberately disagreeing row — 9.2 (CVSS 4.0, "Thanksgiving Dinner
-  maintainers"), 10.0 (fictional "watchTurkey"), 9.8 (3.1), 11.0 ("Grandma").
+- **CVSS:** a deliberately disagreeing row — 9.2 (CVSS 4.0, CNA), 10.0 (a researcher's blog), 9.8 (3.1), 11.0 ("Grandma").
+  Revised after review: "watchTurkey" and "GPT-5.6" were too close to real names.
+- **Alias:** also tracked as Turkey4Nap (two names, one bug).
 - **EPSS:** shown next to CVSS, and it depends on the day. Low on any normal
   day (e.g. 0.00042, 4th percentile). On Thanksgiving Day it climbs to 0.99997
   (100th percentile) by kickoff. The page computes the value from the visitor's
@@ -56,8 +57,8 @@ precise formatting, all the tropes.
   (parody of the real take-sites-offline guidance).
 - **IOCs:** unbuttoned waistband, remote dropped on carpet, ~70 dB snoring at
   halftime, phrase "I'm just resting my eyes".
-- **Discovery credit:** "GPT-5.6 Drumstick, part of the *Patch the Plate* initiative"
-  plus a fictional researcher.
+- **Discovery credit:** "Drumstick-5.6, a frontier AI model, as part of the
+  *Patch the Plate* initiative".
 - **Timeline gags:** found in a 2024 audit and never fixed; embargo leaked by a
   PoC video Aunt Linda posted to the family group chat; exploitation observed
   in the wild four days early (leftovers testing).

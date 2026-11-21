@@ -65,3 +65,14 @@ test('share text has CVE and URL', () => {
   assert.ok(t.includes('https://turkey2nap.org'));
   assert.ok(t.includes('NOT AFFECTED'));
 });
+
+test('EPSS never drops from Thanksgiving Eve into Thanksgiving morning', () => {
+  const eve = epssFor(new Date(2026, 10, 25, 23, 59));
+  let prev = eve;
+  for (let h = 0; h <= 16; h++) {
+    const e = epssFor(new Date(2026, 10, 26, h));
+    assert.ok(e.score >= prev.score && e.percentile >= prev.percentile, `dropped at ${h}:00`);
+    prev = e;
+  }
+  assert.ok(epssFor(new Date(2026, 10, 26, 14, 59)).percentile < 100);
+});
