@@ -320,7 +320,7 @@
 <section class="tldr" aria-label="TL;DR">
   <p><strong>TL;DR</strong></p>
   <p>Every version of Thanksgiving Dinner since 1621 lets an unauthenticated attacker (a relative) send a crafted payload (a second helping) to <code>/couch</code> and achieve Remote Nap Execution. No user interaction is required. The user will, in fact, stop interacting.</p>
-  <p>There is no patch. Mitigations exist. Exploitation in the wild has been observed. Mass exploitation is expected Thursday, within 15 minutes of kickoff.</p>
+  <p>There is no patch. Mitigations exist. Exploitation in the wild has been observed. Campaign activity is geofenced to hosts in the United States. Mass exploitation is expected Thursday, within 15 minutes of kickoff.</p>
 </section>
 
 <section id="scanner" aria-labelledby="scanner-h">
@@ -376,6 +376,8 @@ Caused by: gravy.BoatException: boat empty
         <tr><td>Gravy</td><td class="mono">all</td><td>Won't fix (working as intended)</td></tr>
         <tr><td>Leftovers</td><td class="mono">2026.11.27</td><td>Inherits the vulnerability</td></tr>
         <tr><td>Friendsgiving</td><td class="mono">all forks</td><td>Downstream. Check with your friends.</td></tr>
+        <tr><td>Thanksgiving Dinner (Canada)</td><td class="mono">2026.10.12</td><td>Exploited in October. Hosts have recovered. No action required.</td></tr>
+        <tr><td>Rest of world</td><td class="mono">—</td><td>Not affected. Your regional feast is tracked under a separate CVE.</td></tr>
         <tr><td>Plant-based roast</td><td class="mono">—</td><td>Not affected*</td></tr>
       </tbody>
     </table>
@@ -449,6 +451,8 @@ Caused by: gravy.BoatException: boat empty
     <dd>Yes. A second team named it 40 minutes later. Your scanner will report both, as separate criticals.</dd>
     <dt>Is my uncle vulnerable?</dt>
     <dd>Your uncle is the proof of concept.</dd>
+    <dt>I'm not in the US. Am I safe?</dt>
+    <dd>From this one, yes. Check your own calendar for the next big family meal. Same exploit chain, different payload.</dd>
     <dt>What's the real CVSS score?</dt>
     <dd>Yes.</dd>
     <dt>Why is the EPSS score so high on Thursday?</dt>
